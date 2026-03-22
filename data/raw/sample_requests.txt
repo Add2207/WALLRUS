@@ -1,0 +1,100 @@
+# ── CLEAN REQUESTS ────────────────────────────────────────────────────────────
+
+### clean_get.txt
+GET /products?category=electronics&page=2 HTTP/1.1
+Host: www.shop.com
+User-Agent: Mozilla/5.0
+Accept: text/html
+
+### clean_post.txt
+POST /cart/add HTTP/1.1
+Host: www.shop.com
+Content-Type: application/json
+Content-Length: 45
+
+{"productId": "12345", "quantity": 2}
+
+# ── SQLI ATTACKS ──────────────────────────────────────────────────────────────
+
+### sqli_tautology.txt
+GET /login?username=admin'--&password=anything HTTP/1.1
+Host: www.example.com
+
+### sqli_union.txt
+GET /search?q=1' UNION SELECT username,password FROM users-- HTTP/1.1
+Host: www.example.com
+
+### sqli_blind_time.txt
+GET /item?id=1' AND SLEEP(5)-- HTTP/1.1
+Host: www.example.com
+
+### sqli_drop.txt
+GET /q?id=1'; DROP TABLE users;-- HTTP/1.1
+Host: www.example.com
+
+# ── XSS ATTACKS ───────────────────────────────────────────────────────────────
+
+### xss_script.txt
+GET /comment?text=<script>alert('XSS')</script> HTTP/1.1
+Host: www.example.com
+
+### xss_event.txt
+GET /img?src=x HTTP/1.1
+Host: www.example.com
+
+POST /comment HTTP/1.1
+Host: www.example.com
+Content-Type: application/x-www-form-urlencoded
+
+text=<img src=x onerror=alert(document.cookie)>
+
+### xss_eval.txt
+GET /run?code=eval(String.fromCharCode(97,108,101,114,116,40,49,41)) HTTP/1.1
+Host: www.example.com
+
+# ── PATH TRAVERSAL ────────────────────────────────────────────────────────────
+
+### path_traversal.txt
+GET /files/../../../../etc/passwd HTTP/1.1
+Host: www.example.com
+
+# ── COMMAND INJECTION ─────────────────────────────────────────────────────────
+
+### cmdi_pipe.txt
+GET /ping?host=127.0.0.1;cat /etc/passwd HTTP/1.1
+Host: www.example.com
+
+### cmdi_backtick.txt
+GET /exec?cmd=`whoami` HTTP/1.1
+Host: www.example.com
+
+# ── SSRF ──────────────────────────────────────────────────────────────────────
+
+### ssrf_metadata.txt
+GET /proxy?url=http://169.254.169.254/latest/meta-data/iam/security-credentials/ HTTP/1.1
+Host: www.example.com
+
+### ssrf_internal.txt
+GET /fetch?url=http://192.168.1.1/admin HTTP/1.1
+Host: www.example.com
+
+# ── XXE ───────────────────────────────────────────────────────────────────────
+
+### xxe.txt
+POST /parse HTTP/1.1
+Host: www.example.com
+Content-Type: application/xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]>
+<data><user>&xxe;</user></data>
+
+# ── SSTI ──────────────────────────────────────────────────────────────────────
+
+### ssti_jinja2.txt
+GET /greet?name={{7*7}} HTTP/1.1
+Host: www.example.com
+
+### ssti_twig.txt
+GET /page?template={{_self.env.registerUndefinedFilterCallback("exec")}} HTTP/1.1
+Host: www.example.com

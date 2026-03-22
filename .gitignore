@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# WALLRUS runtime
+logs/*.json
+logs/*.db
+!logs/.gitkeep
+
+# ML models (large binary files — use git-lfs or DVC)
+data/models/*.joblib
+data/models/*.pkl
+!data/models/.gitkeep
+
+# Processed data (may contain PII)
+data/processed/*.csv
+!data/processed/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# macOS
+.DS_Store
+
+# Secrets
+.env
+*.key
