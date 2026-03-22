@@ -198,11 +198,6 @@ pytest tests/ -v --cov=wallrus
 | A10:2021 | SSRF | Internal IPs, cloud metadata |
 
 ---
-
-## Reference
-
-Inspired by [WAFinity](https://github.com/Piyush-2975/Advanced-WAF-WAFinity) by Piyush.
-
 ---
 
 ## License
